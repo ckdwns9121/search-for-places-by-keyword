@@ -51,25 +51,52 @@ export const getPosition = async () => {
   //     console.log(si);
   //   }
 
+  let dong_arr = [];
+  let gu = {};
+  let si = [];
   for (let 시 in sigungu) {
     for (let 구 in sigungu[시]) {
       for await (let 동 of sigungu[시][구]) {
         // 동 중심좌표 받아오기
         const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${동}}`;
         const res = await axios.get(url, config);
-        // 동에 대한 정보가 있을 시
+        // console.log(동);
+        // console.log(res.data.documents[0]);
         if (res.data.documents[0]) {
-          // x,y 좌표 받아오기
           const { x, y } = res.data.documents[0];
-          if (x && y) {
-            const url2 = `https://dapi.kakao.com/v2/local/search/keyword.json?y=${y}&x=${x}&radius=${RADIUS}&query=${KEYWORD}`;
-            const res2 = await axios.get(url2, config);
-            console.log(res2);
-          }
+          let dong = {
+            x: x,
+            y: y,
+            name: 동,
+          };
+          dong_arr.push(dong);
         }
+
+        // 동에 대한 정보가 있을 시
+        // if (res.data.documents[0]) {
+        //   // x,y 좌표 받아오기
+        //   const { x, y } = res.data.documents[0];
+        //   if (x && y) {
+        //     const url2 = `https://dapi.kakao.com/v2/local/search/keyword.json?y=${y}&x=${x}&radius=${RADIUS}&query=${KEYWORD}`;
+        //     const res2 = await axios.get(url2, config);
+        //     console.log(res2);
+        //   }
+        // }
       }
+      gu = {
+        ...gu,
+        [구]: dong_arr,
+      };
+      dong_arr = [];
     }
+    console.log('hello');
+    si = {
+      ...si,
+      [시]: gu,
+    };
+    console.log(si);
   }
   console.log('끝');
+  console.log(JSON.stringify(si, null, '\t'));
   return;
 };
