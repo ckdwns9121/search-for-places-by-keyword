@@ -1,4 +1,4 @@
-let POSITION = {
+export let POSITION = {
   서울특별시: {
     강남구: [
       {
