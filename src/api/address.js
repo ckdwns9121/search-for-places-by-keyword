@@ -23,33 +23,6 @@ export const getPosition = async () => {
       Authorization: `KakaoAK ${KEY}`,
     },
   };
-  //   let DATA = {};
-  //   let gu = {};
-  //   let si = [];
-  //   let dong = [];
-  //   let newState = {};
-  //   let 구;
-  //   for (let 시 in sigungu) {
-  //     for (구 in sigungu[시]) {
-  //       for (let 동 in sigungu[시][구]) {
-  //         dong.push(sigungu[시][구][동]);
-  //         // console.log(sigungu[시][구][동]);
-  //       }
-  //       //   console.log(`-------${구}-------`);
-  //       gu = {
-  //         ...gu,
-  //         [구]: dong,
-  //       };
-  //       dong = [];
-  //     }
-  //     console.log(`-------${시}------`);
-  //     si = {
-  //       ...si,
-  //       [시]: gu,
-  //     };
-  //     gu = {};
-  //     console.log(si);
-  //   }
 
   let dong_arr = [];
   let gu = {};
@@ -96,7 +69,7 @@ export const getPosition = async () => {
     };
     console.log(si);
   }
-  console.log('끝');
-  console.log(JSON.stringify(si, null, '\t'));
+  // console.log('끝');
+  // console.log(JSON.stringify(si, null, '\t'));
   return;
 };
