@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 let blob = null;
 
 const KEY = 'e8a6648f10745c5cfa395c1b839ee0ae';
-const KEYWORD = '영상편집';
+const KEYWORD = '사진관';
 const RADIUS = 20000;
 
 export const getPosition = async () => {
@@ -48,7 +48,7 @@ export const getPosition = async () => {
       { header: '위치', key: 'address', width: 30, data: address_arr },
       { header: '이름', key: 'name', width: 30, data: name_arr },
       { header: '전화번호', key: 'phone', width: 10, data: phone_arr },
-      { header: '아이디', key: 'id', width: 10, data: url_arr },
+      { header: '상세보기', key: 'id', width: 10, data: url_arr },
     ];
     rawData.forEach((data, index) => {
       worksheet.getColumn(index + 1).values = [data.header, ...data.data];
