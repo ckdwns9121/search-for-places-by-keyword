@@ -19,16 +19,13 @@ export const getPosition = async () => {
   };
 
   for (let 시 in POSITION) {
-    const worksheet = workbook.addWorksheet(시); // sheet 이름이 My Sheet
-    // worksheet.columns = [
-    //   { header: '위치', key: 'address', width: 10 },
-    //   { header: '이름', key: 'name', width: 32 },
-    //   { header: '전화번호', key: 'phone', width: 10 },
-    // ];
-    let address_arr = [];
-    let phone_arr = [];
-    let name_arr = [];
     for (let 구 in POSITION[시]) {
+      console.log(구);
+      let worksheet = workbook.addWorksheet(구);
+      let address_arr = [],
+        phone_arr = [],
+        name_arr = [],
+        url_arr = [];
       for await (let 동 of POSITION[시][구]) {
         const { x, y } = 동;
         if (x && y) {
@@ -37,38 +34,34 @@ export const getPosition = async () => {
           console.log(res);
           if (res.data.documents) {
             res.data.documents.forEach(item => {
-              const { address_name, place_name, phone } = item;
-              address_arr.push(address_name);
-              name_arr.push(place_name);
-              phone_arr.push(phone);
+              const { address_name, place_name, phone, place_url } = item;
+              address_name ? address_arr.push(address_name) : address_arr.push('null');
+              place_name ? name_arr.push(place_name) : name_arr.push('null');
+              phone ? phone_arr.push(phone) : phone_arr.push('null');
+              url_arr.push(place_url);
             });
           }
         }
       }
+      const rawData = [
+        { header: '위치', key: 'address', width: 30, data: address_arr },
+        { header: '이름', key: 'name', width: 30, data: name_arr },
+        { header: '전화번호', key: 'phone', width: 10, data: phone_arr },
+        { header: '아이디', key: 'id', width: 10, data: url_arr },
+      ];
+      rawData.forEach((data, index) => {
+        worksheet.getColumn(index + 1).values = [data.header, ...data.data];
+      });
+
+      const mimeType = {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      };
+      const buffer = await workbook.xlsx.writeBuffer();
+      blob = new Blob([buffer], mimeType);
+      console.log(`--------구--------`);
     }
-    console.log(`---------구--------`);
-    // const rawData = [
-    //   { header: '위치', key: 'address', data: Array.from(new Set(address_arr)) },
-    //   { header: '이름', key: 'name', data: Array.from(new Set(name_arr)) },
-    //   { header: '전화번호', key: 'phone', data: Array.from(new Set(phone_arr)) },
-    // ];
-    // const rawData = [
-    //   { header: '위치', key: 'address', address_arr },
-    //   { header: '이름', key: 'name', name_arr },
-    //   { header: '전화번호', key: 'phone', phone_arr },
-    // ];
-
-    // rawData.forEach((data, index) => {
-    //   worksheet.getColumn(index + 1).values = [data.header, ...data.data];
-    // });
-
-    const mimeType = {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    };
-    const buffer = await workbook.xlsx.writeBuffer();
-    blob = new Blob([buffer], mimeType);
+    console.log(`---------시--------`);
     saveAs(blob, `${시}사진관.xlsx`);
-    return;
   }
 
   return;
