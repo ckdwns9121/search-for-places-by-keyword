@@ -6,9 +6,12 @@ import { getPosition } from './api/address';
 import './App.css';
 
 function App() {
-  useEffect(() => {
-    getPosition();
-  }, []);
+  const onClick = async () => {
+    try {
+      await getPosition();
+    } catch (e) {}
+  };
+
   const handleExcel = async () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('My Sheet'); // sheet 이름이 My Sheet
@@ -31,7 +34,7 @@ function App() {
   return (
     <div>
       {' '}
-      <button onClick={handleExcel}>엑셀 내보내기!!</button>{' '}
+      <button onClick={onClick}>엑셀 내보내기!!</button>{' '}
     </div>
   );
 }
