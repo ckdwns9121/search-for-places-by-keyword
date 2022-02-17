@@ -8,9 +8,15 @@ import { saveAs } from 'file-saver';
 function App() {
   const workbook = new ExcelJS.Workbook();
   let blob = null;
-  useEffect(() => {
-    getPosition();
-  }, []);
+
+  const onClick = async () => {
+    try {
+      await getPosition();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {}, []);
 
   const handleExcel = async () => {
     for (var i = 0; i < 2; i++) {
@@ -29,13 +35,13 @@ function App() {
       };
       const buffer = await workbook.xlsx.writeBuffer();
       blob = new Blob([buffer], mimeType);
+      saveAs(blob, `사진관${i}.xlsx`);
     }
-    saveAs(blob, '사진관.xlsx');
   };
   return (
     <div>
       {' '}
-      <button onClick={handleExcel}>엑셀 내보내기!!</button>{' '}
+      <button onClick={onClick}>엑셀 내보내기!!</button>{' '}
     </div>
   );
 }
