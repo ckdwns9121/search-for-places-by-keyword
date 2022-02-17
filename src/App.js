@@ -1,9 +1,14 @@
 import * as ExcelJS from 'exceljs';
+import { useEffect } from 'react';
 import { saveAs } from 'file-saver';
+import { getPosition } from './api/address';
 
 import './App.css';
 
 function App() {
+  useEffect(() => {
+    getPosition();
+  }, []);
   const handleExcel = async () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('My Sheet'); // sheet 이름이 My Sheet

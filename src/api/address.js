@@ -27,14 +27,18 @@ export const getPosition = async () => {
   let dong_arr = [];
   let gu = {};
   let si = [];
+  let result = [];
   for (let 시 in sigungu) {
+    console.log(시);
+    dong_arr = [];
+    gu = {};
     for (let 구 in sigungu[시]) {
+      console.log(구);
+
       for await (let 동 of sigungu[시][구]) {
         // 동 중심좌표 받아오기
         const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${동}}`;
         const res = await axios.get(url, config);
-        // console.log(동);
-        // console.log(res.data.documents[0]);
         if (res.data.documents[0]) {
           const { x, y } = res.data.documents[0];
           let dong = {
@@ -44,32 +48,23 @@ export const getPosition = async () => {
           };
           dong_arr.push(dong);
         }
-
-        // 동에 대한 정보가 있을 시
-        // if (res.data.documents[0]) {
-        //   // x,y 좌표 받아오기
-        //   const { x, y } = res.data.documents[0];
-        //   if (x && y) {
-        //     const url2 = `https://dapi.kakao.com/v2/local/search/keyword.json?y=${y}&x=${x}&radius=${RADIUS}&query=${KEYWORD}`;
-        //     const res2 = await axios.get(url2, config);
-        //     console.log(res2);
-        //   }
-        // }
       }
       gu = {
         ...gu,
         [구]: dong_arr,
       };
       dong_arr = [];
+      console.log('---------구---------');
     }
-    console.log('hello');
     si = {
       ...si,
       [시]: gu,
     };
+    console.log('---------시 푸쉬--------');
     console.log(si);
   }
-  // console.log('끝');
-  // console.log(JSON.stringify(si, null, '\t'));
+  // console.log(result);
+  console.log('끝');
+  console.log(JSON.stringify(si, null, '\t'));
   return;
 };
